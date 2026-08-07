@@ -11,6 +11,6 @@ trait ManagesConfig
     {
         $versions = FacebookService::versions();
 
-        return ServiceManager::get('facebook', 'api_version') ?? current($versions);
+        return ServiceManager::get('facebook', 'configuration.api_version') ?? current($versions);
     }
 }
