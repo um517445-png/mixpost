@@ -1,5 +1,38 @@
 <?php
 
+// ============================================================
+// VENDOR ASSET PROXY: serve mixpost compiled assets from CDN
+// ============================================================
+$uri = $_SERVER['REQUEST_URI'] ?? '';
+if (strncmp($uri, '/vendor/mixpost/', 16) === 0) {
+    $cdnBase = '';
+    $cdnUrl  = $cdnBase . $uri;
+    $ctx = stream_context_create(['http' => [
+        'timeout'         => 10,
+        'follow_location' => true,
+    ]]);
+    $body = @file_get_contents($cdnUrl, false, $ctx);
+    if ($body !== false) {
+        $ext  = strtolower(pathinfo($uri, PATHINFO_EXTENSION));
+        $mime = match ($ext) {
+            'js'    => 'application/javascript; charset=utf-8',
+            'css'   => 'text/css; charset=utf-8',
+            'json'  => 'application/json',
+            'woff2' => 'font/woff2',
+            'woff'  => 'font/woff',
+            'svg'   => 'image/svg+xml',
+            'png'   => 'image/png',
+            default => 'application/octet-stream',
+        };
+        header('Content-Type: ' . $mime);
+        header('Cache-Control: public, max-age=31536000, immutable');
+        header('Access-Control-Allow-Origin: *');
+        echo $body;
+        exit;
+    }
+}
+// ============================================================
+
 try {
     if (!is_dir('/tmp/cache')) {
         @mkdir('/tmp/cache', 0777, true);
