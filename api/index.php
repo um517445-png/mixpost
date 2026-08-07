@@ -5,26 +5,14 @@ try {
 
     $app = require_once __DIR__ . '/../bootstrap/app.php';
 
-    // Register all core Illuminate service providers explicitly on Application instance
-    $providers = [
-        Illuminate\Events\EventServiceProvider::class,
-        Illuminate\Log\LogServiceProvider::class,
-        Illuminate\Routing\RoutingServiceProvider::class,
-        Illuminate\Filesystem\FilesystemServiceProvider::class,
-        Illuminate\View\ViewServiceProvider::class,
-        Illuminate\Session\SessionServiceProvider::class,
-        Illuminate\Cache\CacheServiceProvider::class,
-        Illuminate\Database\DatabaseServiceProvider::class,
-        Illuminate\Translation\TranslationServiceProvider::class,
-        Illuminate\Validation\ValidationServiceProvider::class,
-        Illuminate\Cookie\CookieServiceProvider::class,
-        Illuminate\Encryption\EncryptionServiceProvider::class,
-        Inovector\Mixpost\MixpostServiceProvider::class,
-    ];
-
-    foreach ($providers as $provider) {
-        $app->register($provider);
-    }
+    $app->bootstrapWith([
+        \Illuminate\Foundation\Bootstrap\LoadEnvironmentVariables::class,
+        \Illuminate\Foundation\Bootstrap\LoadConfiguration::class,
+        \Illuminate\Foundation\Bootstrap\HandleExceptions::class,
+        \Illuminate\Foundation\Bootstrap\RegisterFacades::class,
+        \Illuminate\Foundation\Bootstrap\RegisterProviders::class,
+        \Illuminate\Foundation\Bootstrap\BootProviders::class,
+    ]);
 
     $kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
 
