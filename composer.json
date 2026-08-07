@@ -16,6 +16,7 @@
     },
     "autoload": {
         "psr-4": {
+            "App\\": "app/",
             "Inovector\\Mixpost\\": "src/",
             "Inovector\\Mixpost\\Database\\Factories\\": "database/factories/"
         },
