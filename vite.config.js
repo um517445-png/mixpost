@@ -4,34 +4,29 @@ import vue from '@vitejs/plugin-vue';
 import tailwindcss from "@tailwindcss/vite";
 import DefineOptions from 'unplugin-vue-define-options/vite'
 import fs from 'fs';
-import path from 'path'
+import path from 'path';
 import { homedir } from 'os';
 
 export default defineConfig(({command, mode}) => {
-    // Load current .env-file
-    const env = loadEnv(mode, process.cwd(), '')
-
-    // Set the host based on APP_URL
+    const env = loadEnv(mode, process.cwd(), '');
     let host = env.APP_URL !== undefined ? new URL(env.APP_URL).host : null;
-    let homeDir = homedir()
-    let serverConfig = {}
+    let homeDir = homedir();
+    let serverConfig = {};
 
-    if (host && homeDir) {
+    if (command === 'serve' && host && homeDir) {
         const certificatesPath = env.CERTIFICATES_PATH !== undefined ? env.CERTIFICATES_PATH : `.config/valet/Certificates/${host}`;
+        const keyPath = path.resolve(homeDir, `${certificatesPath}.key`);
+        const certPath = path.resolve(homeDir, `${certificatesPath}.crt`);
 
-        serverConfig = {
-            https: {
-                key: fs.readFileSync(
-                    path.resolve(homeDir, `${certificatesPath}.key`),
-                ),
-                cert: fs.readFileSync(
-                    path.resolve(homeDir, `${certificatesPath}.crt`),
-                ),
-            },
-            hmr: {
+        if (fs.existsSync(keyPath) && fs.existsSync(certPath)) {
+            serverConfig = {
+                https: {
+                    key: fs.readFileSync(keyPath),
+                    cert: fs.readFileSync(certPath),
+                },
+                hmr: { host },
                 host
-            },
-            host
+            };
         }
     }
 
