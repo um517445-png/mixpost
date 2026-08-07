@@ -5,9 +5,6 @@ use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 
 $app = Application::configure(basePath: dirname(__DIR__))
-    ->withProviders([
-        \Inovector\Mixpost\MixpostServiceProvider::class,
-    ])
     ->withRouting(
         web: __DIR__.'/../routes/web.php',
     )
