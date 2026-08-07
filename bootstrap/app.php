@@ -19,12 +19,11 @@ $app = Application::configure(basePath: dirname(__DIR__))
         web: __DIR__.'/../routes/web.php',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->web(append: [
+        $middleware->web(prepend: [
             \Illuminate\Cookie\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Session\Middleware\StartSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-            \Inovector\Mixpost\Http\Middleware\HandleInertiaRequests::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
