@@ -28,6 +28,5 @@ $app = Application::configure(basePath: dirname(__DIR__))
 
 $app->useStoragePath('/tmp/storage');
 $app->useBootstrapPath('/tmp');
-$app->useNamespace('App\\');
 
 return $app;
