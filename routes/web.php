@@ -2,10 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use Inovector\Mixpost\Http\Controllers\AccountsController;
+use Inovector\Mixpost\Http\Controllers\AddAccountController;
 use Inovector\Mixpost\Http\Controllers\CallbackSocialProviderController;
 use Inovector\Mixpost\Http\Controllers\DashboardController;
-use Inovector\Mixpost\Http\Controllers\DeleteSocialProviderController;
-use Inovector\Mixpost\Http\Controllers\PostAccountsController;
 use Inovector\Mixpost\Http\Controllers\PostsController;
 use Inovector\Mixpost\Http\Controllers\ServicesController;
 use Inovector\Mixpost\Http\Controllers\SettingsController;
@@ -32,8 +31,9 @@ Route::prefix(config('mixpost.prefix', 'mixpost'))
         Route::get('/services', [ServicesController::class, 'index'])->name('services.index');
         Route::post('/services', [ServicesController::class, 'update'])->name('services.update');
         Route::get('/accounts', [AccountsController::class, 'index'])->name('accounts.index');
+        Route::post('/accounts/add/{provider}', AddAccountController::class)->name('accounts.add');
         Route::post('/accounts/callback/{provider}', CallbackSocialProviderController::class)->name('accounts.callback');
-        Route::delete('/accounts/{provider}', DeleteSocialProviderController::class)->name('accounts.delete');
+        Route::delete('/accounts/{account}', [AccountsController::class, 'delete'])->name('accounts.delete');
         Route::get('/posts', [PostsController::class, 'index'])->name('posts.index');
         Route::get('/posts/create', [PostsController::class, 'create'])->name('posts.create');
         Route::post('/posts', [PostsController::class, 'store'])->name('posts.store');
