@@ -38,7 +38,7 @@ try {
         // Suppress non-fatal post-response termination log errors
     }
 } catch (\Throwable $e) {
-    if (!headers_sent()) {
+    if (!isset($response)) {
         http_response_code(500);
         header('Content-Type: text/html');
         echo "<div style='font-family:sans-serif; padding:20px; background:#fff0f0; border:2px solid #ff0000; border-radius:8px;'>";
