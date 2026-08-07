@@ -29,7 +29,7 @@ Route::prefix(config('mixpost.prefix', 'mixpost'))
     ->group(function () {
         Route::get('/', DashboardController::class)->name('dashboard');
         Route::get('/services', [ServicesController::class, 'index'])->name('services.index');
-        Route::post('/services', [ServicesController::class, 'update'])->name('services.update');
+        Route::put('/services', [ServicesController::class, 'update'])->name('services.update');
         Route::get('/accounts', [AccountsController::class, 'index'])->name('accounts.index');
         Route::post('/accounts/add/{provider}', AddAccountController::class)->name('accounts.add');
         Route::post('/accounts/callback/{provider}', CallbackSocialProviderController::class)->name('accounts.callback');
