@@ -1,6 +1,5 @@
 {
   "version": 2,
-  "framework": null,
   "functions": {
     "api/index.php": {
       "runtime": "vercel-php@0.7.0"
@@ -19,12 +18,7 @@
   "crons": [
     {
       "path": "/api/mixpost/schedule-run",
-      "schedule": "* * * * *"
+      "schedule": "0 0 * * *"
     }
-  ],
-  "env": {
-    "APP_ENV": "production",
-    "APP_DEBUG": "false",
-    "DB_CONNECTION": "pgsql"
-  }
+  ]
 }
