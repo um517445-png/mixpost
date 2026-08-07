@@ -13,13 +13,19 @@ if (!is_dir('/tmp/storage/framework/sessions')) {
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Request;
 
 $app = Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: __DIR__.'/../routes/web.php',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->trustProxies(at: '*', headers: IlluminateHttpRequest::HEADER_X_FORWARDED_FOR | IlluminateHttpRequest::HEADER_X_FORWARDED_HOST | IlluminateHttpRequest::HEADER_X_FORWARDED_PORT | IlluminateHttpRequest::HEADER_X_FORWARDED_PROTO);
+        // Trust Vercel edge proxies so HTTPS URLs are generated correctly
+        $middleware->trustProxies(at: '*', headers: Request::HEADER_X_FORWARDED_FOR |
+            Request::HEADER_X_FORWARDED_HOST |
+            Request::HEADER_X_FORWARDED_PORT |
+            Request::HEADER_X_FORWARDED_PROTO);
+
         $middleware->web(prepend: [
             \Illuminate\Cookie\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
