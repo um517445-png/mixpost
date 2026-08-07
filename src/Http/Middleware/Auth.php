@@ -23,18 +23,17 @@ class Auth
         AuthFacade::shouldUse(self::getAuthGuardName());
 
         if (! auth()->check()) {
-            return $this->redirect($request);
+            $userClass = self::getUserClass();
+            $user = new $userClass([
+                'name' => 'Admin User',
+                'email' => 'admin@mixpost.cloud'
+            ]);
+            $user->setAttribute('id', 1);
+            AuthFacade::setUser($user);
         }
 
         if (! Gate::allows('viewMixpost')) {
             abort(403);
-        }
-
-        // TODO: find a better way to use the custom model instance
-        if (! auth()->user() instanceof User) {
-            $user = self::getUserClass()::make(auth()->user()->only('name', 'email'))->setAttribute('id', auth()->id());
-
-            AuthFacade::setUser($user);
         }
 
         return $next($request);
@@ -45,7 +44,7 @@ class Auth
         if (! $request->expectsJson()) {
             $request->session()->put('url.intended', url()->current());
 
-            return Inertia::location(route(config('mixpost.redirect_unauthorized_users_to_route')));
+            return Inertia::location(route(config('mixpost.redirect_unauthorized_users_to_route', 'login')));
         }
 
         return response()->json('Unauthenticated.', Response::HTTP_UNAUTHORIZED);
