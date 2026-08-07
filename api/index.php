@@ -1,6 +1,16 @@
 <?php
 
 try {
+    if (!is_dir('/tmp/cache')) {
+        @mkdir('/tmp/cache', 0777, true);
+    }
+    if (!is_dir('/tmp/storage/framework/views')) {
+        @mkdir('/tmp/storage/framework/views', 0777, true);
+    }
+    if (!is_dir('/tmp/storage/framework/sessions')) {
+        @mkdir('/tmp/storage/framework/sessions', 0777, true);
+    }
+
     require __DIR__ . '/../vendor/autoload.php';
 
     $app = require_once __DIR__ . '/../bootstrap/app.php';
@@ -22,7 +32,11 @@ try {
 
     $response->send();
 
-    $kernel->terminate($request, $response);
+    try {
+        $kernel->terminate($request, $response);
+    } catch (\Throwable $e) {
+        // Suppress non-fatal post-response termination exceptions
+    }
 } catch (\Throwable $e) {
     http_response_code(500);
     header('Content-Type: text/html');
