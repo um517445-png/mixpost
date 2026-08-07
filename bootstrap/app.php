@@ -19,6 +19,7 @@ $app = Application::configure(basePath: dirname(__DIR__))
         web: __DIR__.'/../routes/web.php',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        $middleware->trustProxies(at: '*', headers: IlluminateHttpRequest::HEADER_X_FORWARDED_FOR | IlluminateHttpRequest::HEADER_X_FORWARDED_HOST | IlluminateHttpRequest::HEADER_X_FORWARDED_PORT | IlluminateHttpRequest::HEADER_X_FORWARDED_PROTO);
         $middleware->web(prepend: [
             \Illuminate\Cookie\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
