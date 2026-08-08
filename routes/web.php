@@ -51,6 +51,7 @@ Route::middleware([
     ->name('mixpost.')
     ->group(function () {
         Route::get('/cron', CronController::class)->name('cron');
+        Route::post('/ai/generate', AiGenerateController::class)->name('ai.generate');
         Route::get('/publish-now/{id}', function ($id) {
             $post = \Inovector\Mixpost\Models\Post::findOrFail($id);
             (new \Inovector\Mixpost\Actions\PublishPost)($post);
