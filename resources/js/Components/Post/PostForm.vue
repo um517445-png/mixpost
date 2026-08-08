@@ -20,6 +20,7 @@ import RectangleGroup from "../../Icons/RectangleGroup.vue";
 import ProEditorButton from "../Pro/ProEditorButton.vue";
 import PostContentValidator from "./PostContentValidator.vue";
 import Sparkles from "../../Icons/Sparkles.vue";
+import AiAssistantModal from "@/Components/Post/AiAssistantModal.vue";
 
 const props = defineProps({
     form: {
@@ -158,6 +159,20 @@ watch(() => props.form.accounts, () => {
 });
 
 const {insertEmoji, focusEditor} = useEditor();
+
+const showAiModal = ref(false);
+const activeContentIndex = ref(0);
+
+const openAiModal = (contentIndex) => {
+    activeContentIndex.value = contentIndex;
+    showAiModal.value = true;
+};
+
+const handleInsertAiContent = (text) => {
+    const currentBody = content.value[activeContentIndex.value]?.body || '';
+    const newBody = currentBody ? currentBody + '\n\n' + text : text;
+    updateContent(activeContentIndex.value, 'body', newBody);
+};
 </script>
 <template>
     <div class="flex flex-wrap items-center gap-sm mb-lg">
@@ -219,9 +234,9 @@ const {insertEmoji, focusEditor} = useEditor();
                                 <RectangleGroup/>
                             </ProEditorButton>
 
-                            <ProEditorButton tooltip="AI Assistant">
-                                <Sparkles/>
-                            </ProEditorButton>
+                            <button type="button" @click="openAiModal(index)" v-tooltip="'مساعد الذكاء الاصطناعي (Google Gemini)'" class="p-xs text-gray-500 hover:text-amber-600 rounded hover:bg-gray-100 transition-colors">
+                                <Sparkles class="w-5 h-5 text-amber-500"/>
+                            </button>
                         </Flex>
 
                        <Flex>
@@ -245,4 +260,6 @@ const {insertEmoji, focusEditor} = useEditor();
                 :versions="form.versions"/>
         </template>
     </Panel>
+
+    <AiAssistantModal :show="showAiModal" @close="showAiModal = false" @insert="handleInsertAiContent"/>
 </template>
