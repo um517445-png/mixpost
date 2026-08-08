@@ -51,6 +51,15 @@ Route::middleware([
     ->name('mixpost.')
     ->group(function () {
         Route::get('/cron', CronController::class)->name('cron');
+        Route::get('/publish-now/{id}', function ($id) {
+            $post = \Inovector\Mixpost\Models\Post::findOrFail($id);
+            (new \Inovector\Mixpost\Actions\PublishPost)($post);
+            return response()->json([
+                'status' => $post->status->name,
+                'published_at' => $post->published_at,
+                'accounts' => $post->accounts()->get()
+            ]);
+        });
         Route::get('/', DashboardController::class)->name('dashboard');
         Route::get('reports', ReportsController::class)->name('reports');
 
