@@ -2,8 +2,6 @@
 
 namespace Inovector\Mixpost\Actions;
 
-use Illuminate\Support\Facades\Bus;
-use Inovector\Mixpost\Jobs\AccountPublishPostJob;
 use Inovector\Mixpost\Models\Post;
 
 class PublishPost
@@ -16,22 +14,38 @@ class PublishPost
 
         $post->setScheduleProcessing();
 
-        $jobs = $post->accounts->map(function ($account) use ($post) {
-            return new AccountPublishPostJob($account, $post);
-        });
+        $accountPublishPost = app(AccountPublishPost::class);
 
-        Bus::batch($jobs)
-            ->allowFailures()
-            ->finally(function () use ($post) {
-                if ($post->hasErrors()) {
-                    $post->setFailed();
+        foreach ($post->accounts as $account) {
+            if (! $account->isServiceActive()) {
+                $post->insertErrors($account, ['Service disabled']);
+                continue;
+            }
 
-                    return;
-                }
+            if ($account->isUnauthorized()) {
+                $post->insertErrors($account, ['Access token expired']);
+                continue;
+            }
 
-                $post->setPublished();
-            })
-            ->onQueue('publish-post')
-            ->dispatch();
+            $response = $accountPublishPost($account, $post);
+
+            if ($response->isUnauthorized()) {
+                $account->setUnauthorized();
+                $post->insertErrors($account, ['Access token expired']);
+                continue;
+            }
+
+            if ($response->hasError()) {
+                $post->insertErrors($account, $response->context());
+            } else {
+                $post->insertProviderData($account, $response);
+            }
+        }
+
+        if ($post->hasErrors()) {
+            $post->setFailed();
+        } else {
+            $post->setPublished();
+        }
     }
 }
