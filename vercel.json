@@ -24,7 +24,7 @@
   "crons": [
     {
       "path": "/mixpost/cron",
-      "schedule": "* * * * *"
+      "schedule": "0 0 * * *"
     }
   ]
 }
