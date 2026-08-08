@@ -12,6 +12,7 @@ Route::get('/login', function () {
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 use Inovector\Mixpost\Http\Controllers\AccountEntitiesController;
 use Inovector\Mixpost\Http\Controllers\AccountsController;
 use Inovector\Mixpost\Http\Controllers\AddAccountController;
@@ -148,6 +149,27 @@ Route::middleware([
 
         Route::post('logout', [AuthenticatedController::class, 'destroy'])
             ->name('logout');
+
+        
+        // Enterprise Suite Routes
+        Route::get('/posting-schedule', function () {
+            return Inertia::render('PostingSchedule');
+        })->name('schedule.index');
+
+        Route::get('/webhooks', function () {
+            return Inertia::render('Webhooks/Index');
+        })->name('webhooks.index');
+
+        Route::prefix('workspaces')->name('workspaces.')->group(function () {
+            Route::get('/', function () { return Inertia::render('Admin/Workspaces/Index'); })->name('index');
+            Route::get('create', function () { return Inertia::render('Admin/Workspaces/CreateEdit'); })->name('create');
+            Route::post('store', function (Request $request) { return redirect()->route('mixpost.workspaces.index'); })->name('store');
+            Route::get('{id}', function ($id) { return Inertia::render('Admin/Workspaces/View'); })->name('show');
+        });
+
+        Route::prefix('tokens')->name('tokens.')->group(function () {
+            Route::get('/', function () { return Inertia::render('Admin/AccessTokens/Index'); })->name('index');
+        });
 
         Route::get('callback/{provider}', CallbackSocialProviderController::class)->name('callbackSocialProvider');
     });
