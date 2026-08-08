@@ -93,6 +93,31 @@ import UpgradePro from "../Pro/UpgradePro.vue";
                     </template>
                     Services
                 </MenuItem>
+
+                <MenuItem :url="route('mixpost.schedule.index')" :active="$page.component === 'PostingSchedule'">
+                    <template #icon>
+                        <CalendarIcon/>
+                    </template>
+                    Posting Schedule
+                </MenuItem>
+                <MenuItem :url="route('mixpost.workspaces.index')" :active="$page.component.startsWith('Admin/Workspaces')">
+                    <template #icon>
+                        <ServerStackIcon/>
+                    </template>
+                    Workspaces
+                </MenuItem>
+                <MenuItem :url="route('mixpost.tokens.index')" :active="$page.component === 'Admin/AccessTokens/Index'">
+                    <template #icon>
+                        <CogIcon/>
+                    </template>
+                    Access Tokens
+                </MenuItem>
+                <MenuItem :url="route('mixpost.webhooks.index')" :active="$page.component === 'Webhooks/Index'">
+                    <template #icon>
+                        <ShareIcon/>
+                    </template>
+                    Webhooks Engine
+                </MenuItem>
                 <MenuItem :url="route('mixpost.settings.index')" :active="$page.component === 'Settings'">
                     <template #icon>
                         <CogIcon/>
