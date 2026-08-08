@@ -23,8 +23,8 @@
   ],
   "crons": [
     {
-      "path": "/api/mixpost/schedule-run",
-      "schedule": "0 * * * *"
+      "path": "/mixpost/cron",
+      "schedule": "* * * * *"
     }
   ]
 }
