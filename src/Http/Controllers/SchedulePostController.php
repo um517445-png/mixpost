@@ -4,6 +4,7 @@ namespace Inovector\Mixpost\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
+use Inovector\Mixpost\Actions\PublishPost;
 use Inovector\Mixpost\Facades\Settings;
 use Inovector\Mixpost\Http\Requests\SchedulePost;
 use Inovector\Mixpost\Util;
@@ -14,8 +15,12 @@ class SchedulePostController extends Controller
     {
         $schedulePost->handle();
 
+        if (request('postNow')) {
+            (new PublishPost)($schedulePost->post);
+        }
+
         $scheduledAt = $schedulePost->getDateTime()->tz(Settings::get('timezone'))->format('D, M j, '.Util::timeFormat());
 
-        return response()->json("The post has been scheduled.\n$scheduledAt");
+        return response()->json("The post has been scheduled.\n{$scheduledAt}");
     }
 }
