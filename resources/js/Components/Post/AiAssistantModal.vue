@@ -5,7 +5,7 @@ import Modal from "@/Components/Modal/Modal.vue";
 import PrimaryButton from "@/Components/Button/PrimaryButton.vue";
 import SecondaryButton from "@/Components/Button/SecondaryButton.vue";
 import Sparkles from "@/Icons/Sparkles.vue";
-import Loading from "@/Icons/Loading.vue";
+import CircleLoading from "@/Icons/CircleLoading.vue";
 
 const props = defineProps({
     show: {
@@ -103,7 +103,7 @@ const closeModal = () => {
             <div class="flex justify-end mb-md">
                 <PrimaryButton @click="generateContent" :disabled="isLoading || !prompt.trim()" class="bg-amber-600 hover:bg-amber-700">
                     <template v-if="isLoading">
-                        <Loading class="w-4 h-4 mr-2 animate-spin"/>
+                        <CircleLoading class="w-4 h-4 mr-2 animate-spin"/>
                         جاري التوليد بواسطة Gemini...
                     </template>
                     <template v-else>
