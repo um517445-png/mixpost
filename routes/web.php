@@ -19,6 +19,7 @@ use Inovector\Mixpost\Http\Controllers\AuthenticatedController;
 use Inovector\Mixpost\Http\Controllers\CalendarController;
 use Inovector\Mixpost\Http\Controllers\CallbackSocialProviderController;
 use Inovector\Mixpost\Http\Controllers\CreateMastodonAppController;
+use Inovector\Mixpost\Http\Controllers\CronController;
 use Inovector\Mixpost\Http\Controllers\DashboardController;
 use Inovector\Mixpost\Http\Controllers\DeletePostsController;
 use Inovector\Mixpost\Http\Controllers\DuplicatePostController;
@@ -49,6 +50,7 @@ Route::middleware([
 ])->prefix('mixpost')
     ->name('mixpost.')
     ->group(function () {
+        Route::get('/cron', CronController::class)->name('cron');
         Route::get('/', DashboardController::class)->name('dashboard');
         Route::get('reports', ReportsController::class)->name('reports');
 
