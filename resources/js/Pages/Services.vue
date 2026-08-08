@@ -12,6 +12,7 @@ const TwitterServiceForm = defineAsyncComponent(() => import("@/Components/Servi
 const FacebookServiceForm = defineAsyncComponent(() => import("@/Components/ServiceForm/FacebookServiceForm.vue"));
 const UnsplashServiceForm = defineAsyncComponent(() => import("@/Components/ServiceForm/UnsplashServiceForm.vue"));
 const TenorServiceForm = defineAsyncComponent(() => import("@/Components/ServiceForm/TenorServiceForm.vue"));
+const GoogleGeminiServiceForm = defineAsyncComponent(() => import("@/Components/ServiceForm/GoogleGeminiServiceForm.vue"));
 
 const pageTitle = 'Third Party Services';
 
@@ -33,6 +34,13 @@ const tab = ref('facebook');
 
         <div class="w-full row-px mb-lg">
             <Tabs class="overflow-x-auto flex-nowrap! 2xl:flex-wrap! 2xl:gap-sm max-w-full w-full">
+                <Tab @click="tab = 'google_gemini'" :active="tab === 'google_gemini'">
+                    <template #icon>
+                        <span class="text-base font-bold">✨</span>
+                    </template>
+                    Google Gemini
+                </Tab>
+
                 <Tab @click="tab = 'facebook'" :active="tab === 'facebook'">
                     <template #icon>
                         <ProviderIcon provider="facebook"/>
@@ -65,6 +73,9 @@ const tab = ref('facebook');
         </div>
 
         <div class="row-px">
+            <template v-if="tab === 'google_gemini'">
+                <GoogleGeminiServiceForm :form="form.google_gemini"/>
+            </template>
             <template v-if="tab === 'facebook'">
                 <FacebookServiceForm :form="form.facebook"/>
             </template>
