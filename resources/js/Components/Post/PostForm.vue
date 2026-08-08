@@ -234,7 +234,7 @@ const handleInsertAiContent = (text) => {
                                 <RectangleGroup/>
                             </ProEditorButton>
 
-                            <button type="button" @click="openAiModal(index)" v-tooltip="'مساعد الذكاء الاصطناعي (Google Gemini)'" class="p-xs text-gray-500 hover:text-amber-600 rounded hover:bg-gray-100 transition-colors">
+                            <button type="button" @click="openAiModal(index)" id="geminiAiBtn" v-tooltip="'مساعد الذكاء الاصطناعي (Google Gemini)'" class="p-xs text-gray-500 hover:text-amber-600 rounded hover:bg-gray-100 transition-colors">
                                 <Sparkles class="w-5 h-5 text-amber-500"/>
                             </button>
                         </Flex>
