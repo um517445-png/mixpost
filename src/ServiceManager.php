@@ -12,6 +12,7 @@ use Inovector\Mixpost\Collection\ServiceCollection;
 use Inovector\Mixpost\Exceptions\ServiceNotRegistered;
 use Inovector\Mixpost\Models\Service as ServiceModel;
 use Inovector\Mixpost\Services\FacebookService;
+use Inovector\Mixpost\Services\GoogleGeminiService;
 use Inovector\Mixpost\Services\TenorService;
 use Inovector\Mixpost\Services\TwitterService;
 use Inovector\Mixpost\Services\UnsplashService;
@@ -32,6 +33,7 @@ class ServiceManager
     {
         return [
             FacebookService::class,
+            GoogleGeminiService::class,
             TwitterService::class,
             UnsplashService::class,
             TenorService::class,
